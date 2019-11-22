@@ -6,38 +6,33 @@ const Distributor = require('../models/distributor');
 // Client methods
 
 authCtrl.signinClient = async (req, res) => {
-    const { email, password } = req.body;   
+    const { email, password } = req.body;
     console.log("fields");
-    console.log(email);
-    console.log(password);
-    try {
-        const fClient = await Client.findOne({ "email": email })
-        console.log(fClient);
-        if (fClient != null) {
-            if (password == fClient.password) {
-                res.status(200).send({
-                    message: "Usuario encontrado",
-                    user: fClient
-                })
-            } else {
-                res.status(400).send({ message: "Contraseña incorrecta" })
-            }
-        }else{
-            res.status(400).send({ message: "No se encuentra ningun cliente registrado con ese email" })
+    console.log(req.body);
+    const fClient = await Client.findOne({ "email": email })
+    console.log(fClient);
+    if (fClient != null) {
+        if (password == fClient.password) {
+            res.status(200).send({
+                message: "Usuario encontrado",
+                client: fClient
+            })
+        } else {
+            res.status(400).send({ message: "Contraseña incorrecta" })
         }
-    }catch(err) {
-        console.log(err);
+    } else {
         res.status(400).send({ message: "No se encuentra ningun cliente registrado con ese email" })
     }
 };
 
 authCtrl.signupClient = (req, res) => {
     const { name, lastname, email, password } = req.body;
+    console.log(req.body);
     const newClient = new Client({
-        name: name,
-        lastname: lastname,
-        email: email,
-        password: password
+        name,
+        lastname,
+        email,
+        password
     });
     newClient.save()
         .then(client => {
@@ -55,15 +50,14 @@ authCtrl.signupClient = (req, res) => {
 authCtrl.signinDistributor = async (req, res) => {
     const { email, password } = req.body;
     console.log("fields");
-    console.log(email);
-    console.log(password);
+    console.log(req.body);
     const fDistributor = await Distributor.findOne({ "email": email })
     console.log(fDistributor);
     if (fDistributor != null) {
         if (password == fDistributor.password) {
             res.status(200).send({
                 message: "Usuario encontrado",
-                user: fDistributor
+                distributor: fDistributor
             })
         } else {
             res.status(400).send({ message: "Contraseña incorrecta" })
@@ -76,19 +70,23 @@ authCtrl.signinDistributor = async (req, res) => {
 
 authCtrl.signupDistributor = (req, res) => {
     const { namestore, email, password, lat, lng } = req.body;
+    console.log(req.body);
     const newDistributor = new Distributor({
-        namestore: namestore,
-        email: email,
-        password: password,
-        lat: lat,
-        lng: lng
+        namestore,
+        email,
+        password,
+        lat,
+        lng
     });
     newDistributor.save()
         .then(distributor => {
             console.log(distributor);
             res.status(201).send({ message: "Distribuidor creado exitosamente", distributor })
         })
-        .catch(err => res.status(400).send({ message: "Hubo algun error, intentelo nuevamente" }));
+        .catch(err => {
+            console.log(err);
+            res.status(400).send({ message: "Hubo algun error, intentelo nuevamente" })
+        });
     ;
 };
 

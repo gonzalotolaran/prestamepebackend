@@ -1,6 +1,7 @@
 const { Schema, model } = require('mongoose');
 
 const Card = require('../models/card');
+const Prestamo = require('../models/prestamo');
 
 const clientSchema = new Schema({
     email: {
@@ -20,7 +21,8 @@ const clientSchema = new Schema({
         type: String,
         required: true
     },
-    cards: [Card]
+    cards: [Card],
+    prestamos: [Prestamo]
 },
     {
         timestamps: true

@@ -1,6 +1,7 @@
 const clientCtrl = {};
 
 const Client = require('../models/client');
+const Prestamo = require('../models/prestamo');
 
 
 clientCtrl.getClient = async (req, res) => {
@@ -47,6 +48,27 @@ clientCtrl.deleteCard = async (req, res) => {
         .then(client => {
             console.log(client);
             res.status(200).send({ message: "Card eliminado exitosamente", cards: client.cards })
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(400).send({ message: "Hubo algun error, intentelo nuevamente" })
+        });
+};
+
+
+//Prestamos
+
+clientCtrl.addPrestamo = async (req, res) => {
+    const client = await Client.findById(req.params.idClient);
+    const { cantidad } = req.body;
+    const newCard = {
+        cantidad
+    };
+    client.prestamos.push(newCard);
+    client.save()
+        .then(client => {
+            console.log(client);
+            res.status(201).send({ message: "Prestamo solicitado exitosamente", prestamos: client.prestamos })
         })
         .catch(err => {
             console.log(err);
