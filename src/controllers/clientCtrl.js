@@ -42,7 +42,6 @@ clientCtrl.deleteCard = async (req, res) => {
     const actCards = client.cards;
     const idCard = req.params.idCard;
     const newCards = actCards.filter( (value) => value.id !== idCard);
-    res.status(200).send({ message: newCards });
     client.cards = newCards;
     client.save()
         .then(client => {
