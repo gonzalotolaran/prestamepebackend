@@ -21,8 +21,7 @@ const clientSchema = new Schema({
         type: String,
         required: true
     },
-    cards: [Card],
-    prestamos: [Prestamo]
+    cards: [Card]
 },
     {
         timestamps: true

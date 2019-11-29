@@ -17,8 +17,8 @@ app.use(morgan('dev')); // show console messages
 app.get('/api/v1.0', (req,res) => {
     res.send("Bienvenido al Api de PrestamePe");
 });
-app.use('/api/v1.0/auth', require('./routes/auth'));
-app.use('/api/v1.0/distributors', require('./routes/distributors'));
-app.use('/api/v1.0/clients', require('./routes/clients'));
+app.use('/api/v1.0/auth', require('./routes/authRoutes'));
+app.use('/api/v1.0/distributors', require('./routes/distributorRoutes'));
+app.use('/api/v1.0/clients', require('./routes/clientRoutes'));
 
 module.exports = app;

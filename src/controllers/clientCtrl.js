@@ -59,21 +59,36 @@ clientCtrl.deleteCard = async (req, res) => {
 //Prestamos
 
 clientCtrl.addPrestamo = async (req, res) => {
-    const client = await Client.findById(req.params.idClient);
-    const { cantidad } = req.body;
-    const newCard = {
-        cantidad
-    };
-    client.prestamos.push(newCard);
-    client.save()
-        .then(client => {
-            console.log(client);
-            res.status(201).send({ message: "Prestamo solicitado exitosamente", prestamos: client.prestamos })
+    const idCliente = req.params.idClient;
+    const { cantidad, idTarjeta } = req.body;
+    const newPrestamo = Prestamo({
+        cantidad,
+        idCliente,
+        idTarjeta
+    });
+    newPrestamo.save()
+        .then(prestamo => {
+            console.log(prestamo);
+            res.status(201).send({ message: "Prestamo solicitado exitosamente", prestamo })
         })
         .catch(err => {
             console.log(err);
             res.status(400).send({ message: "Hubo algun error, intentelo nuevamente" })
         });
 };
+
+clientCtrl.getPrestamos = async (req, res) => {
+    const idCliente = req.params.idClient;
+    const prestamos = await Prestamo.find({"idCliente": idCliente}).sort('-createdAt').populate('idDistribuidor');
+    console.log(prestamos);
+    res.status(200).send({ message: "Prestamos encontrados", prestamos });
+};
+
+
+
+
+
+
+
 
 module.exports = clientCtrl;

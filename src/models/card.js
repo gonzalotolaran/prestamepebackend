@@ -5,7 +5,6 @@ const cardSchema = new Schema({
         type: String,
         required: true,
         maxlength: 16,
-        unique: true
     },
     month: {
         type: String,
@@ -32,7 +31,7 @@ const cardSchema = new Schema({
     },
     bank: {
         type: String,
-        required: true,
+        default: "SIN BANCO",
         uppercase: true
     }
 },
